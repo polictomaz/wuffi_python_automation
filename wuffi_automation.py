@@ -3,6 +3,12 @@ import time
 import json
 import random
 
+# proxy = {
+#     'http':  'socks5://localhost:9050',
+#     'https': 'socks5://localhost:9050',
+# }
+
+# url = 'https://httpbin.org/get'
 # Configuration
 num_calls = 5  # Number of times to call the API in a row
 delay = 10     # Delay between batches of calls (in seconds)
@@ -38,14 +44,16 @@ def random_float_within_range(min_val, max_val):
 
 
 def make_api_call():
+    taps = random.randint(140, 180)
     end_time = int(time.time() * 1000) - 2 * 1000
     start_time = int(end_time - (random_float_within_range(min_val, max_val) * 1000))
     json_data = json.dumps({
-        "taps": random.randint(140, 180),
+        "taps": taps,
         "startTime": start_time,
         "endTime": end_time
     })
     print("JSON DATA: ", json_data)
+    print("ENERGY SPENT: ", taps * 21)
     print("TIME DIFF: ", end_time - start_time)
     try:
         response = requests.put(api_url, headers=headers, data=json_data)
